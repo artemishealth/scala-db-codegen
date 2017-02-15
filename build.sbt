@@ -1,42 +1,8 @@
-lazy val publishSettings = Seq(
-  publishMavenStyle := true,
-  publishMavenStyle := true,
-  publishArtifact := true,
-  publishTo := {
-    val nexus = "https://maven.internal.artemishealth.com/"
-    if (isSnapshot.value)
-      Some("snapshots" at nexus + "ext-snapshot-local")
-    else
-      Some("releases" at nexus + "libs-release-local")
-  },
-  publishArtifact in Test := false,
-  licenses := Seq(
-    "MIT" -> url("http://www.opensource.org/licenses/mit-license.php")),
-  homepage := Some(url("https://github.com/artemishealth/scala-db-codegen")),
-  autoAPIMappings := true,
-  apiURL := Some(url("https://github.com/artemishealth/scala-db-codegen")),
-  scmInfo := Some(
-    ScmInfo(
-      url("https://github.com/artemishealth/scala-db-codegen"),
-      "scm:git:git@github.com:artemishealth/scala-db-codegen.git"
-    )
-  ),
-  pomExtra :=
-    <developers>
-        <developer>
-          <id>artemishealth</id>
-          <name>Ólafur Páll Geirsson</name>
-          <url>https://geirsson.com</url>
-        </developer>
-      </developers>
-)
-
 lazy val `launaskil-codegen` =
   (project in file("."))
     .settings(packSettings)
-    .settings(publishSettings)
     .settings(
-      name := "scala-scala-db-codegen",
+      name := "scala-db-codegen",
       organization := "com.geirsson",
       scalaVersion := "2.11.8",
       version := com.geirsson.codegen.Versions.nightly,
@@ -50,3 +16,9 @@ lazy val `launaskil-codegen` =
         "org.scalatest" %% "scalatest" % "3.0.0" % "test"
       )
     )
+
+publishTo := Some("Artifactory Realm" at
+"https://maven.internal.artemishealth.com/artifactory/libs-release-local;build.timestamp=" + new
+java.util.Date().getTime)
+credentials += Credentials("Artifactory Realm", "maven.internal.artemishealth.com", sys.env("ARTIFACTORY_USER"),
+sys.env("ARTIFACTORY_PASSWORD"))

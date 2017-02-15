@@ -3,28 +3,28 @@ lazy val publishSettings = Seq(
   publishMavenStyle := true,
   publishArtifact := true,
   publishTo := {
-    val nexus = "https://oss.sonatype.org/"
+    val nexus = "https://maven.internal.artemishealth.com/"
     if (isSnapshot.value)
-      Some("snapshots" at nexus + "content/repositories/snapshots")
+      Some("snapshots" at nexus + "ext-snapshot-local")
     else
-      Some("releases" at nexus + "service/local/staging/deploy/maven2")
+      Some("releases" at nexus + "libs-release-local")
   },
   publishArtifact in Test := false,
   licenses := Seq(
     "MIT" -> url("http://www.opensource.org/licenses/mit-license.php")),
-  homepage := Some(url("https://github.com/olafurpg/db-codegen")),
+  homepage := Some(url("https://github.com/artemishealth/scala-db-codegen")),
   autoAPIMappings := true,
-  apiURL := Some(url("https://github.com/olafurpg/db-codegen")),
+  apiURL := Some(url("https://github.com/artemishealth/scala-db-codegen")),
   scmInfo := Some(
     ScmInfo(
-      url("https://github.com/olafurpg/db-codegen"),
-      "scm:git:git@github.com:olafurpg/db-codegen.git"
+      url("https://github.com/artemishealth/scala-db-codegen"),
+      "scm:git:git@github.com:artemishealth/scala-db-codegen.git"
     )
   ),
   pomExtra :=
     <developers>
         <developer>
-          <id>olafurpg</id>
+          <id>artemishealth</id>
           <name>Ólafur Páll Geirsson</name>
           <url>https://geirsson.com</url>
         </developer>
@@ -36,11 +36,11 @@ lazy val `launaskil-codegen` =
     .settings(packSettings)
     .settings(publishSettings)
     .settings(
-      name := "scala-db-codegen",
+      name := "scala-scala-db-codegen",
       organization := "com.geirsson",
       scalaVersion := "2.11.8",
       version := com.geirsson.codegen.Versions.nightly,
-      packMain := Map("scala-db-codegen" -> "com.geirsson.codegen.Codegen"),
+      packMain := Map("scala-scala-db-codegen" -> "com.geirsson.codegen.Codegen"),
       libraryDependencies ++= Seq(
         "com.geirsson" %% "scalafmt-core" % "0.3.0",
         "io.getquill" %% "quill-core" % "0.8.0",

@@ -114,7 +114,7 @@ case class Codegen(options: CodegenOptions, namingStrategy: NamingStrategy) {
       val simpleColumn = SimpleColumn(tableName, colName)
       val ref = foreignKeys.find(_.from == simpleColumn).map(_.to)
       val typ = cols.getString(TYPE_NAME)
-      var mappedColumnType = columnType2scalaType.get(tableName+"."+colName)
+      var mappedColumnType = columnName2scalaType.get(tableName+"."+colName)
       if(mappedColumnType.isDefined) {
         Right(Column(
           tableName,

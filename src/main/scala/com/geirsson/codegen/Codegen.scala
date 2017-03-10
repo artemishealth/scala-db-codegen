@@ -113,26 +113,30 @@ case class Codegen(options: CodegenOptions, namingStrategy: NamingStrategy) {
       val colName = cols.getString(COLUMN_NAME)
       val simpleColumn = SimpleColumn(tableName, colName)
       val ref = foreignKeys.find(_.from == simpleColumn).map(_.to)
-
       val typ = cols.getString(TYPE_NAME)
-      columnType2scalaType.get(typ).map { foo =>
-        var scalaType = ""
-        var mappedColumnType = columnType2scalaType.get(tableName+"."+colName)
-        if(mappedColumnType.isDefined) {
-          scalaType = mappedColumnType.get
-        }
-        else {
-          scalaType = foo
-        }
+      var mappedColumnType = columnType2scalaType.get(tableName+"."+colName)
+      if(mappedColumnType.isDefined) {
         Right(Column(
           tableName,
           colName,
-          scalaType,
+          mappedColumnType.get,
           cols.getBoolean(NULLABLE),
           primaryKeys contains cols.getString(COLUMN_NAME),
           ref
         ))
-      }.getOrElse(Left(typ))
+      }
+      else {
+        columnType2scalaType.get(typ).map { scalaType =>
+          Right(Column(
+            tableName,
+            colName,
+            scalaType,
+            cols.getBoolean(NULLABLE),
+            primaryKeys contains cols.getString(COLUMN_NAME),
+            ref
+          ))
+        }.getOrElse(Left(typ))
+      }
     }.toVector
   }
 

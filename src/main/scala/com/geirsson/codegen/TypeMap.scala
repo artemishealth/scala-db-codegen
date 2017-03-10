@@ -33,6 +33,10 @@ object TypeMap {
     "uuid" -> "java.util.UUID", // H2, PostgreSQL
     "json" -> "String" // PostgreSQL
   )
+
+  val empty = TypeMap(
+
+  )
 }
 
 case class TypeMap(pairs: (String, String)*)

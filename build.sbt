@@ -13,12 +13,13 @@ lazy val `launaskil-codegen` =
         "com.h2database" % "h2" % "1.4.192",
         "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
         "com.github.alexarchambault" %% "case-app" % "1.0.0-RC3",
-        "org.scalatest" %% "scalatest" % "3.0.0" % "test"
-      )
+        "org.scalatest" %% "scalatest" % "3.0.0" % "test",
+        "net.jcazevedo" %% "moultingyaml" % "0.4.0"
+
+)
     )
 
 publishTo := Some("Artifactory Realm" at
 "https://maven.internal.artemishealth.com/artifactory/libs-release-local;build.timestamp=" + new
 java.util.Date().getTime)
-credentials += Credentials("Artifactory Realm", "maven.internal.artemishealth.com", sys.env("ARTIFACTORY_USER"),
-sys.env("ARTIFACTORY_PASSWORD"))
+credentials += Credentials("Artifactory Realm", "maven.internal.artemishealth.com", "mattalleman", "MueKIde1M8s3")

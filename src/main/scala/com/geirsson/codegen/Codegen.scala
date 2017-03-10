@@ -40,6 +40,9 @@ case class CodegenOptions(
       "Do not generate classes for these tables."
     ) excludedTables: List[String] = List("schema_version"),
     @HelpMessage(
+      "Map Table column to type"
+    ) tableColumnTypeMap: TypeMap = TypeMap.empty,
+    @HelpMessage(
       "Write generated code to this filename. Prints to stdout if not set."
     ) file: Option[String] = None
 ) extends App {
@@ -50,6 +53,7 @@ case class Codegen(options: CodegenOptions, namingStrategy: NamingStrategy) {
   import Codegen._
   val excludedTables = options.excludedTables.toSet
   val columnType2scalaType = options.typeMap.pairs.toMap
+  val columnName2scalaType = options.tableColumnTypeMap.pairs.toMap
 
   def results(resultSet: ResultSet): Iterator[ResultSet] = {
     new Iterator[ResultSet] {
@@ -111,7 +115,16 @@ case class Codegen(options: CodegenOptions, namingStrategy: NamingStrategy) {
       val ref = foreignKeys.find(_.from == simpleColumn).map(_.to)
 
       val typ = cols.getString(TYPE_NAME)
-      columnType2scalaType.get(typ).map { scalaType =>
+      columnType2scalaType.get(typ).map { foo =>
+        var scalaType = ""
+        var mappedColumnType = columnType2scalaType.get(tableName+"."+colName)
+        if(mappedColumnType.isDefined) {
+          scalaType = mappedColumnType.get
+        }
+        else {
+          scalaType = foo
+        }
+        println(scalaType)
         Right(Column(
           tableName,
           colName,

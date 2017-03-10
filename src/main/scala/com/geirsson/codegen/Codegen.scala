@@ -124,7 +124,6 @@ case class Codegen(options: CodegenOptions, namingStrategy: NamingStrategy) {
         else {
           scalaType = foo
         }
-        println(scalaType)
         Right(Column(
           tableName,
           colName,
